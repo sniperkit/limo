@@ -3,17 +3,32 @@ package service
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"os"
+	"path/filepath"
 	"time"
+	// "log"
 
-	"golang.org/x/oauth2"
+	"github.com/sniperkit/limo/model"
 
+	// cache
+	"github.com/sniperkit/httpcache"
+	"github.com/sniperkit/httpcache/badgercache" // BadgerKV default implementation
+
+	// stats
+	"github.com/segmentio/stats/httpstats"
+
+	// vcs
 	"github.com/google/go-github/github"
 	"github.com/hoop33/entrevista"
-	"github.com/hoop33/limo/model"
+	"golang.org/x/oauth2"
+	// debug
+	// "github.com/k0kubun/pp"
 )
 
 // Github represents the Github service
 type Github struct {
+	hcache httpcache.Cache
 }
 
 // Login logs in to Github
@@ -49,6 +64,7 @@ func (g *Github) GetStars(ctx context.Context, starChan chan<- *model.StarResult
 				Page: currentPage,
 			},
 		})
+
 		// If we got an error, put it on the channel
 		if err != nil {
 			starChan <- &model.StarResult{
@@ -159,12 +175,49 @@ func (g *Github) getDateSearchString() string {
 	return fmt.Sprintf("created:>%s", date.Format("2006-01-02"))
 }
 
+func ensureDir(path string) {
+	d, err := os.Open(path)
+	if err != nil {
+		os.MkdirAll(path, os.FileMode(0755))
+	}
+	d.Close()
+}
+
 func (g *Github) getClient(token string) *github.Client {
+
+	cacheStoragePrefixPath := filepath.Join("data", "cache.badger")
+	ensureDir(cacheStoragePrefixPath)
+	var err error
+	if g.hcache == nil {
+		g.hcache, err = badgercache.New(
+			&badgercache.Config{
+				ValueDir:    "api.github.com.v3.snappy", //gzip",
+				StoragePath: cacheStoragePrefixPath,
+				SyncWrites:  true,
+				Compress:    true,
+			})
+		if err != nil {
+			fmt.Println("err: ", err.Error())
+			return nil
+		}
+	}
+
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: token},
 	)
-	tc := oauth2.NewClient(context.Background(), ts)
-	return github.NewClient(tc)
+
+	t := httpcache.NewTransport(g.hcache)
+	t.MarkCachedResponses = true
+	t.Transport = httpstats.NewTransport(t.Transport)
+	timeout := time.Duration(10 * time.Second)
+
+	return github.NewClient(&http.Client{
+		Transport: &oauth2.Transport{
+			Base:   t,
+			Source: ts,
+		},
+		Timeout: timeout,
+	})
 }
 
 func init() {

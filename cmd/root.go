@@ -5,11 +5,11 @@ import (
 	"os"
 
 	"github.com/blevesearch/bleve"
-	"github.com/hoop33/limo/config"
-	"github.com/hoop33/limo/model"
-	"github.com/hoop33/limo/output"
-	"github.com/hoop33/limo/service"
 	"github.com/jinzhu/gorm"
+	"github.com/sniperkit/limo/config"
+	"github.com/sniperkit/limo/model"
+	"github.com/sniperkit/limo/output"
+	"github.com/sniperkit/limo/service"
 	"github.com/spf13/cobra"
 )
 

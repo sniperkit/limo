@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/hoop33/limo/config"
-	"github.com/hoop33/limo/model"
+	"github.com/sniperkit/limo/config"
+	"github.com/sniperkit/limo/model"
 	"github.com/spf13/cobra"
 )
 

@@ -5,10 +5,15 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"time"
+
+	"github.com/sniperkit/limo/model"
 
 	"github.com/fatih/color"
 	"github.com/hoop33/entrevista"
-	"github.com/hoop33/limo/model"
+
+	"github.com/segmentio/stats"
+	"github.com/segmentio/stats/influxdb"
 )
 
 // Service represents a service
@@ -19,7 +24,30 @@ type Service interface {
 	GetEvents(ctx context.Context, eventChan chan<- *model.EventResult, token, user string, page, count int)
 }
 
-var services = make(map[string]Service)
+var (
+	// vcs services
+	services = make(map[string]Service)
+	// stats
+	statsTags    []stats.Tag = []stats.Tag{}
+	influxClient *influxdb.Client
+	influxConfig influxdb.ClientConfig
+	statsEngine  *stats.Engine
+)
+
+func init() {
+	influxConfig = influxdb.ClientConfig{
+		Database:   "limo-httpstats",
+		Address:    "127.0.0.1:8086",
+		BufferSize: 2 * 1024 * 1024,
+		Timeout:    5 * time.Second,
+	}
+	influxClient = influxdb.NewClientWith(influxConfig)
+	influxClient.CreateDB("limo-httpstats")
+
+	// register engine
+	stats.Register(influxClient)
+	defer stats.Flush()
+}
 
 func registerService(service Service) {
 	services[Name(service)] = service
