@@ -30,3 +30,7 @@ limo
 
 # Test coverage
 *.out
+
+data
+data/
+data/**
