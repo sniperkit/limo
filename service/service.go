@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
-	"time"
+	// "time"
 
 	"github.com/sniperkit/limo/model"
 
@@ -35,18 +35,20 @@ var (
 )
 
 func init() {
-	influxConfig = influxdb.ClientConfig{
-		Database:   "limo-httpstats",
-		Address:    "127.0.0.1:8086",
-		BufferSize: 2 * 1024 * 1024,
-		Timeout:    5 * time.Second,
-	}
-	influxClient = influxdb.NewClientWith(influxConfig)
-	influxClient.CreateDB("limo-httpstats")
+	/*
+		influxConfig = influxdb.ClientConfig{
+			Database:   "limo-httpstats",
+			Address:    "127.0.0.1:8086",
+			BufferSize: 2 * 1024 * 1024,
+			Timeout:    5 * time.Second,
+		}
+		influxClient = influxdb.NewClientWith(influxConfig)
+		influxClient.CreateDB("limo-httpstats")
 
-	// register engine
-	stats.Register(influxClient)
-	defer stats.Flush()
+		// register engine
+		stats.Register(influxClient)
+		defer stats.Flush()
+	*/
 }
 
 func registerService(service Service) {

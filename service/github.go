@@ -13,6 +13,7 @@ import (
 
 	// cache
 	"github.com/sniperkit/httpcache"
+	// "github.com/gregjones/httpcache"
 	"github.com/sniperkit/httpcache/badgercache" // BadgerKV default implementation
 
 	// stats
@@ -60,8 +61,11 @@ func (g *Github) GetStars(ctx context.Context, starChan chan<- *model.StarResult
 
 	for currentPage <= lastPage {
 		repos, response, err := client.Activity.ListStarred(ctx, user, &github.ActivityListStarredOptions{
+			Sort:      "updated",
+			Direction: "desc", // desc
 			ListOptions: github.ListOptions{
-				Page: currentPage,
+				Page:    currentPage,
+				PerPage: 100,
 			},
 		})
 
@@ -99,7 +103,8 @@ func (g *Github) GetEvents(ctx context.Context, eventChan chan<- *model.EventRes
 
 	for currentPage <= lastPage {
 		events, _, err := client.Activity.ListEventsReceivedByUser(ctx, user, false, &github.ListOptions{
-			Page: currentPage,
+			Page:    currentPage,
+			PerPage: 100,
 		})
 
 		if err != nil {
@@ -141,9 +146,15 @@ func (g *Github) GetTrending(ctx context.Context, trendingChan chan<- *model.Sta
 		fmt.Println("q =", q)
 	}
 
+	currentPage := 1
+
 	result, _, err := client.Search.Repositories(ctx, q, &github.SearchOptions{
 		Sort:  "stars",
 		Order: "desc",
+		ListOptions: github.ListOptions{
+			Page:    currentPage,
+			PerPage: 100,
+		},
 	})
 
 	// If we got an error, put it on the channel
@@ -191,7 +202,7 @@ func (g *Github) getClient(token string) *github.Client {
 	if g.hcache == nil {
 		g.hcache, err = badgercache.New(
 			&badgercache.Config{
-				ValueDir:    "api.github.com.v3.snappy", //gzip",
+				ValueDir:    "api.github.com.v3.gzip", //gzip",
 				StoragePath: cacheStoragePrefixPath,
 				SyncWrites:  true,
 				Compress:    true,
@@ -206,14 +217,17 @@ func (g *Github) getClient(token string) *github.Client {
 		&oauth2.Token{AccessToken: token},
 	)
 
+	var hc http.Client
+
 	t := httpcache.NewTransport(g.hcache)
 	t.MarkCachedResponses = true
-	t.Transport = httpstats.NewTransport(t.Transport)
+
+	hc.Transport = httpstats.NewTransport(t)
 	timeout := time.Duration(10 * time.Second)
 
 	return github.NewClient(&http.Client{
 		Transport: &oauth2.Transport{
-			Base:   t,
+			Base:   hc.Transport,
 			Source: ts,
 		},
 		Timeout: timeout,
