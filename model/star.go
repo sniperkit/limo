@@ -101,7 +101,7 @@ func CreateOrUpdateStar(db *gorm.DB, star *Star, service *Service) (bool, error)
 func FindStarByID(db *gorm.DB, ID uint) (*Star, error) {
 	var star Star
 	if db.First(&star, ID).RecordNotFound() {
-		return nil, fmt.Errorf("Star '%d' not found", ID)
+		return nil, fmt.Errorf("star '%d' not found", ID)
 	}
 	return &star, db.Error
 }
@@ -230,6 +230,13 @@ func FuzzyFindStarsByName(db *gorm.DB, name string) ([]Star, error) {
 	return stars, db.Error
 }
 
+// FindPrunableStars finds all stars that weren't updated during the last successful update
+func FindPrunableStars(db *gorm.DB, service *Service) ([]Star, error) {
+	var stars []Star
+	db.Where("service_id = ? AND updated_at < ?", service.ID, service.LastSuccess).Order("full_name").Find(&stars)
+	return stars, db.Error
+}
+
 // FindLanguages finds all languages
 func FindLanguages(db *gorm.DB) ([]string, error) {
 	var languages []string
@@ -248,7 +255,7 @@ func (star *Star) LoadTags(db *gorm.DB) error {
 	// Make sure star exists in database, or we will panic
 	var existing Star
 	if db.Where("id = ?", star.ID).First(&existing).RecordNotFound() {
-		return fmt.Errorf("Star '%d' not found", star.ID)
+		return fmt.Errorf("star '%d' not found", star.ID)
 	}
 	return db.Model(star).Association("Tags").Find(&star.Tags).Error
 }
@@ -292,9 +299,14 @@ func (star *Star) OpenInBrowser(preferHomepage bool) error {
 		URL = *star.URL
 	} else {
 		if star.Name != nil {
-			return fmt.Errorf("No URL for star '%s'", *star.Name)
+			return fmt.Errorf("no URL for star '%s'", *star.Name)
 		}
-		return errors.New("No URL for star")
+		return errors.New("no URL for star")
 	}
 	return open.Start(URL)
+}
+
+// Delete soft-deletes a star
+func (star *Star) Delete(db *gorm.DB) error {
+	return db.Delete(&star).Error
 }

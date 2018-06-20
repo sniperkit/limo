@@ -3,7 +3,10 @@
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.5.0]
 ### Added
+- Add `prune` command to prune unstarred repos
 - Add `-b/--browse` flag to `list` command to open items in browser
 - Switch to `go dep` for dependency management
 - Add customizable "update" spinner
@@ -46,8 +49,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## 0.1.0 - 2016-06-27
 ### Initial Release
 
-[Unreleased]: https://github.com/sniperkit/limo/compare/v0.4.0...HEAD
-[0.4.0]: https://github.com/sniperkit/limo/compare/v0.3.1...v0.4.0
-[0.3.1]: https://github.com/sniperkit/limo/compare/v0.3.0...v0.3.1
-[0.3.0]: https://github.com/sniperkit/limo/compare/v0.2.0...v0.3.0
-[0.2.0]: https://github.com/sniperkit/limo/compare/v0.1.0...v0.2.0
+[Unreleased]: https://github.com/hoop33/limo/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/hoop33/limo/compare/v0.4.0...v0.5.0
+[0.4.0]: https://github.com/hoop33/limo/compare/v0.3.1...v0.4.0
+[0.3.1]: https://github.com/hoop33/limo/compare/v0.3.0...v0.3.1
+[0.3.0]: https://github.com/hoop33/limo/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/hoop33/limo/compare/v0.1.0...v0.2.0
