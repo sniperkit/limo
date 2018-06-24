@@ -5,21 +5,21 @@ PACKAGES = $(shell go list ./... | grep -v /vendor/)
 default: build
 
 install: build
-	go install
+	go install github.com/hoop33/limo/cmd/limo
 
-build: check
-	go build
+build:
+	go build ./cmd/limo/*.go
 
 dist: macos linux windows
 
 macos:
-	GOOS=darwin go build -o $(DIST_DIR)/macos/$(PROG_NAME)
+	GOOS=darwin go build -o $(DIST_DIR)/macos/$(PROG_NAME) ./cmd/limo/*.go
 
 linux:
-	GOOS=linux go build -o $(DIST_DIR)/linux/$(PROG_NAME)
+	GOOS=linux go build -o $(DIST_DIR)/linux/$(PROG_NAME) ./cmd/limo/*.go
 
 windows:
-	GOOS=windows go build -o $(DIST_DIR)/windows/$(PROG_NAME).exe
+	GOOS=windows go build -o $(DIST_DIR)/windows/$(PROG_NAME).exe ./cmd/limo/*.go
 
 check: vet lint errcheck interfacer aligncheck structcheck varcheck unconvert gosimple staticcheck unused vendorcheck prealloc test
 

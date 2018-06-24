@@ -31,6 +31,13 @@ limo
 # Test coverage
 *.out
 
-data
-data/
-data/**
+bin
+bin/
+bin/*
+bin/**
+
+dist
+dist/
+dist/*
+dist/**
+
