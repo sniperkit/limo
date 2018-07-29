@@ -1,0 +1,26 @@
+---
+groups:
+  default:
+  - vcs-starred-dev
+  app:
+  - vcs-starred-cli
+  - vcs-starred-api
+  web:
+  - vcs-starred-api
+  cli:
+  - vcs-starred-cli
+  stores_kv:
+  - snk-redis
+  stores_sql:
+  - snk-postgres
+  - snk-mysql
+
+commands:
+  test: run vcs-starred-dev make test
+  build: run vcs-starred-dev make build
+  gofmt: run vcs-starred-dev gofmt -w crane
+
+accelerated-mounts:
+  crane:
+    uid: 1000
+    gid: 1000

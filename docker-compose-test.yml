@@ -1,0 +1,45 @@
+version: '3'
+services:
+
+    vcs-starred-testcli:
+        name: vcs-starred-testcli
+        image: sniperkit/snk-vcs-starred:testcli-3.7-alpine
+        environment:
+        - DISKV_BASE_DIR=./diskv
+        volumes:
+        - "diskv:/diskv"
+
+    vcs-starred-testapi:
+        name: vcs-starred-testapi
+        image: sniperkit/snk-vcs-starred:testapi-3.7-alpine
+        environment:
+        - DISKV_BASE_DIR=./diskv
+        volumes:
+        - "diskv:/diskv"
+        ports:
+        - 8080:8080
+        restart: always
+
+    postgres:
+        name: postgres
+        image: postgres:10-alpine
+        restart: always
+        ports:
+        - 5432:5432
+
+    mysql:
+        name: mysql
+        image: mysql:4-alpine
+        restart: always
+        ports:
+        - 3306:3306
+
+    redis:
+        image: redis:4-alpine
+        restart: always
+        ports:
+          - "6379:6379"
+
+volumes:
+  diskv: 
+  - "./shared/data/cache/diskv:/diskv"

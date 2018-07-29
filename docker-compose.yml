@@ -1,0 +1,56 @@
+---
+version: '3'
+
+services:
+
+    vcs-starred-dev:
+        name: vcs-starred-dev
+        image: sniperkit/snk-vcs-starred:dev-3.7-alpine
+        environment:
+        - DISKV_BASE_DIR=./diskv
+        volumes:
+        - "diskv:/diskv"
+
+    vcs-starred-cli:
+        name: vcs-starred-cli
+        image: sniperkit/snk-vcs-starred:cli-3.7-alpine
+        environment:
+        - DISKV_BASE_DIR=./diskv
+        volumes:
+        - "diskv:/diskv"
+
+    vcs-starred-api:
+        name: vcs-starred-api
+        image: sniperkit/snk-vcs-starred:api-3.7-alpine
+        environment:
+        - DISKV_BASE_DIR=./diskv
+        volumes:
+        - "diskv:/diskv"
+        ports:
+        - 8080:8080
+        restart: always
+
+    snk-postgres:
+        name: snk-postgres
+        image: postgres:10-alpine
+        restart: always
+        ports:
+        - 5432:5432
+
+    snk-mysql:
+        name: snk-mysql
+        image: mysql:4-alpine
+        restart: always
+        ports:
+        - 3306:3306
+
+    snk-redis:
+        name: snk-redis
+        image: redis:4-alpine
+        restart: always
+        ports:
+          - "6379:6379"
+
+volumes:
+  diskv: 
+  - "./shared/data/cache/diskv:/diskv"
