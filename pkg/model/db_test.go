@@ -5,6 +5,7 @@ import (
 	"os"
 	"testing"
 
+	// external
 	"github.com/jinzhu/gorm"
 )
 

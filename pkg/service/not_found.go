@@ -4,7 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/hoop33/limo/pkg/model"
+	// internal
+	"github.com/sniperkit/snk.golang.vcs-starred/pkg/model"
 )
 
 // NotFound is used when the specified service is not found

@@ -6,6 +6,7 @@ import (
 	"log"
 	"strings"
 
+	// external
 	"github.com/jinzhu/gorm"
 )
 

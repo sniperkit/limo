@@ -5,11 +5,13 @@ import (
 	"strconv"
 	"strings"
 
+	// external
 	"github.com/blevesearch/bleve"
 	"github.com/spf13/cobra"
 
-	"github.com/hoop33/limo/pkg/config"
-	"github.com/hoop33/limo/pkg/model"
+	// internal
+	"github.com/sniperkit/snk.golang.vcs-starred/pkg/config"
+	"github.com/sniperkit/snk.golang.vcs-starred/pkg/model"
 )
 
 // SearchCmd does a full-text search

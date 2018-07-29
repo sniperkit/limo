@@ -4,11 +4,14 @@ import (
 	"context"
 	"errors"
 
+	// external
 	"github.com/hoop33/entrevista"
+	"github.com/k0kubun/pp"
 	"github.com/xanzy/go-gitlab"
 
-	"github.com/hoop33/limo/pkg/model"
-	"github.com/hoop33/limo/pkg/service"
+	// internal
+	"github.com/sniperkit/snk.golang.vcs-starred/pkg/model"
+	"github.com/sniperkit/snk.golang.vcs-starred/pkg/service"
 )
 
 // Gitlab represents the Gitlab service
@@ -41,12 +44,23 @@ func (g *Gitlab) GetStars(ctx context.Context, starChan chan<- *model.StarResult
 	currentPage := 1
 	lastPage := 1
 
+	opts := &gitlab.ListProjectsOptions{
+		ListOptions: gitlab.ListOptions{
+			PerPage: 100,
+		},
+		Archived: gitlab.Bool(true),
+		OrderBy:  gitlab.String("updated_at"),
+		Sort:     gitlab.String("desc"),
+		// Search:     string("query"),
+		Statistics: gitlab.Bool(true),
+		Simple:     gitlab.Bool(true),
+		Starred:    gitlab.Bool(true),
+		Visibility: gitlab.Visibility(gitlab.PublicVisibility),
+	}
+
 	for currentPage <= lastPage {
-		projects, response, err := client.Projects.ListStarredProjects(&gitlab.ListProjectsOptions{
-			ListOptions: gitlab.ListOptions{
-				Page: currentPage,
-			},
-		})
+		opts.ListOptions.Page = currentPage
+		projects, response, err := client.Projects.ListProjects(opts)
 		// If we got an error, put it on the channel
 		if err != nil {
 			starChan <- &model.StarResult{
@@ -55,10 +69,10 @@ func (g *Gitlab) GetStars(ctx context.Context, starChan chan<- *model.StarResult
 			}
 		} else {
 			// Set last page only if we didn't get an error
-			lastPage = response.LastPage
-
+			lastPage = response.TotalPages
 			// Create a Star for each repository and put it on the channel
 			for _, project := range projects {
+				pp.Println(*project)
 				star, err := model.NewStarFromGitlab(*project)
 				starChan <- &model.StarResult{
 					Error: err,

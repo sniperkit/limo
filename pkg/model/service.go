@@ -3,6 +3,7 @@ package model
 import (
 	"time"
 
+	// external
 	"github.com/jinzhu/gorm"
 )
 

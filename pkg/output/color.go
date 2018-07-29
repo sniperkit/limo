@@ -6,12 +6,14 @@ import (
 	"os"
 	"time"
 
+	// external
 	"github.com/briandowns/spinner"
 	"github.com/dustin/go-humanize"
 	"github.com/fatih/color"
 
-	"github.com/hoop33/limo/pkg/config"
-	"github.com/hoop33/limo/pkg/model"
+	// internal
+	"github.com/sniperkit/snk.golang.vcs-starred/pkg/config"
+	"github.com/sniperkit/snk.golang.vcs-starred/pkg/model"
 )
 
 const defaultInterval = 300

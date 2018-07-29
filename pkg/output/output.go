@@ -4,8 +4,9 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/hoop33/limo/pkg/config"
-	"github.com/hoop33/limo/pkg/model"
+	// internal
+	"github.com/sniperkit/snk.golang.vcs-starred/pkg/config"
+	"github.com/sniperkit/snk.golang.vcs-starred/pkg/model"
 )
 
 // Output represents an output option

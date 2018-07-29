@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	// external
 	"github.com/google/go-github/github"
 	"github.com/stretchr/testify/assert"
 	"github.com/xanzy/go-gitlab"

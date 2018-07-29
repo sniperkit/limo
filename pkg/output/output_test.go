@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"testing"
 
+	// external
 	"github.com/stretchr/testify/assert"
 )
 

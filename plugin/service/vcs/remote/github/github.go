@@ -3,15 +3,18 @@ package github
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
+	// external
 	"github.com/google/go-github/github"
 	"github.com/hoop33/entrevista"
+	"github.com/k0kubun/pp"
 	"golang.org/x/oauth2"
 
-	"github.com/hoop33/limo/pkg/model"
-
-	"github.com/hoop33/limo/pkg/service"
+	// internal
+	"github.com/sniperkit/snk.golang.vcs-starred/pkg/model"
+	"github.com/sniperkit/snk.golang.vcs-starred/pkg/service"
 )
 
 // Github represents the Github service
@@ -46,10 +49,15 @@ func (g *Github) GetStars(ctx context.Context, starChan chan<- *model.StarResult
 	lastPage := 1
 
 	for currentPage <= lastPage {
+
+		// application/vnd.github.mercy-preview+json
+		// mediaTypeTopicsPreview
 		repos, response, err := client.Activity.ListStarred(ctx, user, &github.ActivityListStarredOptions{
+			Sort:      "updated",
+			Direction: "desc",
 			ListOptions: github.ListOptions{
 				Page:    currentPage,
-				PerPage: 100,
+				PerPage: 100, // add in config file
 			},
 		})
 		// If we got an error, put it on the channel
@@ -64,6 +72,7 @@ func (g *Github) GetStars(ctx context.Context, starChan chan<- *model.StarResult
 
 			// Create a Star for each repository and put it on the channel
 			for _, repo := range repos {
+				pp.Println("FullName: ", *repo.Repository.FullName, "Topics: ", strings.Join(repo.Repository.Topics, ","))
 				star, err := model.NewStarFromGithub(repo.StarredAt, *repo.Repository)
 				starChan <- &model.StarResult{
 					Error: err,

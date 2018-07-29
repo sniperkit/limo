@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	// external
 	"github.com/blevesearch/bleve"
 	"github.com/google/go-github/github"
 	"github.com/jinzhu/gorm"
@@ -55,7 +56,7 @@ func NewStarFromGithub(timestamp *github.Timestamp, star github.Repository) (*St
 	}
 
 	return &Star{
-		RemoteID:    strconv.Itoa(*star.ID),
+		RemoteID:    strconv.Itoa(int(*star.ID)), // strconv.Itoa(*star.ID),
 		Name:        star.Name,
 		FullName:    star.FullName,
 		Description: star.Description,

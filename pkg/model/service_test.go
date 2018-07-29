@@ -3,6 +3,7 @@ package model
 import (
 	"testing"
 
+	// external
 	"github.com/stretchr/testify/assert"
 )
 

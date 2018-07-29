@@ -5,9 +5,11 @@ import (
 	"testing"
 	"time"
 
+	// external
 	"github.com/stretchr/testify/assert"
 
-	"github.com/hoop33/limo/pkg/model"
+	// internal
+	"github.com/sniperkit/snk.golang.vcs-starred/pkg/model"
 )
 
 var text Text
@@ -47,8 +49,8 @@ func ExampleText_Star() {
 	fullName := "hoop33/limo"
 	language := "Go"
 	description := "A CLI for managing starred Git repositories"
-	homepage := "https://github.com/hoop33/limo"
-	url := "https://github.com/hoop33/limo.git"
+	homepage := "https://github.com/sniperkit/snk.golang.vcs-starred"
+	url := "https://github.com/sniperkit/snk.golang.vcs-starred.git"
 	star := &model.Star{
 		FullName:    &fullName,
 		Stargazers:  1000000,
@@ -68,9 +70,9 @@ func ExampleText_Star() {
 	}
 	text.Star(star)
 	// Output:
-	// hoop33/limo *:1000000 Go https://github.com/hoop33/limo.git
+	// hoop33/limo *:1000000 Go https://github.com/sniperkit/snk.golang.vcs-starred.git
 	// cli, git
 	// A CLI for managing starred Git repositories
-	// Home page: https://github.com/hoop33/limo
+	// Home page: https://github.com/sniperkit/snk.golang.vcs-starred
 	// Starred on Tue Jun 21 14:56:05 UTC 2016
 }

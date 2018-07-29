@@ -6,10 +6,12 @@ import (
 	"os"
 	"time"
 
+	// external
 	"github.com/dustin/go-humanize"
 
-	"github.com/hoop33/limo/pkg/config"
-	"github.com/hoop33/limo/pkg/model"
+	// internal
+	"github.com/sniperkit/snk.golang.vcs-starred/pkg/config"
+	"github.com/sniperkit/snk.golang.vcs-starred/pkg/model"
 )
 
 // Text is a monochrome text output

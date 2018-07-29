@@ -6,10 +6,12 @@ import (
 	"reflect"
 	"strings"
 
+	// external
 	"github.com/fatih/color"
 	"github.com/hoop33/entrevista"
 
-	"github.com/hoop33/limo/pkg/model"
+	// internal
+	"github.com/sniperkit/snk.golang.vcs-starred/pkg/model"
 )
 
 // Service represents a service

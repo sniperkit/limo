@@ -3,9 +3,11 @@ package cli
 import (
 	"fmt"
 
+	// external
 	"github.com/spf13/cobra"
 
-	"github.com/hoop33/limo/pkg/config"
+	// internal
+	"github.com/sniperkit/snk.golang.vcs-starred/pkg/config"
 )
 
 // VersionCmd shows the version

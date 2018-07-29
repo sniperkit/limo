@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	// external
 	"github.com/google/go-github/github"
 	"github.com/skratchdot/open-golang/open"
 )

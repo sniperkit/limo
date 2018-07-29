@@ -3,6 +3,7 @@ package vcs
 import (
 	"io/ioutil"
 
+	// external
 	"github.com/Masterminds/vcs"
 )
 

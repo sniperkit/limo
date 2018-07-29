@@ -1,13 +1,16 @@
 DIST_DIR ?= ./dist
-PROG_NAME ?= limo
+PROG_NAME ?= slk
 PACKAGES = $(shell go list ./... | grep -v /vendor/)
 
 default: build
 
 install: build
-	go install github.com/hoop33/limo/cmd/limo
+	go install github.com/sniperkit/snk.golang.vcs-starred/cmd/limo
 
 build:
+	go build ./cmd/limo/*.go
+
+run:
 	go build ./cmd/limo/*.go
 
 dist: macos linux windows

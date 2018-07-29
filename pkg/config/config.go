@@ -7,6 +7,7 @@ import (
 	"os"
 	"path"
 
+	// external
 	"github.com/cep21/xdgbasedir"
 	"gopkg.in/yaml.v2"
 )

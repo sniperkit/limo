@@ -4,15 +4,17 @@ import (
 	"context"
 	"fmt"
 
+	// external
 	"github.com/fatih/color"
 	"github.com/hoop33/entrevista"
 	"github.com/spf13/cobra"
 
-	"github.com/hoop33/limo/pkg/config"
-	"github.com/hoop33/limo/pkg/model"
-	"github.com/hoop33/limo/pkg/service"
+	// internal
+	"github.com/sniperkit/snk.golang.vcs-starred/pkg/config"
+	"github.com/sniperkit/snk.golang.vcs-starred/pkg/model"
+	"github.com/sniperkit/snk.golang.vcs-starred/pkg/service"
 
-	_ "github.com/hoop33/limo/plugin/service/vcs/remote"
+	_ "github.com/sniperkit/snk.golang.vcs-starred/plugin/service/vcs/remote"
 )
 
 var any = false

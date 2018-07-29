@@ -1,7 +1,8 @@
 package main
 
 import (
-	"github.com/hoop33/limo/plugin/web/api"
+	// internal
+	"github.com/sniperkit/snk.golang.vcs-starred/plugin/web/api"
 )
 
 func main() {
